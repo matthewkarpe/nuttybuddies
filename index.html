@@ -1,0 +1,543 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Nutty Buddies | A Peer-Led Space for People With Mental Illness</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --page-bg: #050816;       /* deep navy */
+      --banner-bg: #020617;     /* darker navy banner */
+      --card-bg: #f97316;       /* orange cards */
+      --card-bg-soft: #fb923c;
+      --text-main: #111827;
+      --text-light: #f9fafb;
+      --muted: #e5e7eb;
+      --radius: 18px;
+      --shadow: 0 18px 45px rgba(0, 0, 0, 0.6);
+      --card-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #0b1120 0, #020617 45%, #000 100%);
+      color: var(--text-light);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 16px 64px;
+    }
+
+    /* HEADER / BANNER */
+
+    .header-wrap {
+      position: relative;
+      margin-bottom: 32px;
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 18px;
+      align-items: center;
+    }
+
+    .menu-wrapper {
+      position: relative;
+      width: 190px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .logo-button {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      border: none;
+      padding: 12px;
+      cursor: pointer;
+      background: #020617;
+      box-shadow:
+        0 0 20px rgba(248, 250, 252, 0.1),
+        0 0 45px rgba(250, 204, 21, 0.45),
+        0 25px 40px rgba(0, 0, 0, 0.9);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .logo-inner-circle {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      overflow: hidden;
+      background: #020617;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo-inner-circle img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain; /* show full logo inside the circle */
+      display: block;
+    }
+
+    .logo-button:hover {
+      transform: translateY(-2px);
+      box-shadow:
+        0 0 25px rgba(248, 250, 252, 0.15),
+        0 0 60px rgba(250, 204, 21, 0.7),
+        0 28px 50px rgba(0, 0, 0, 1);
+    }
+
+    .logo-button:focus-visible {
+      outline: 3px solid #fbbf24;
+      outline-offset: 4px;
+    }
+
+    .banner {
+      background: radial-gradient(circle at top left, #111827 0, var(--banner-bg) 55%);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 28px 32px;
+    }
+
+    .banner-title {
+      font-size: clamp(2rem, 3vw, 2.6rem);
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .banner-sub {
+      max-width: 540px;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    /* DROPDOWN MENU FROM LOGO */
+
+    .dropdown-menu {
+      position: absolute;
+      top: 190px;
+      left: 50%;
+      transform: translateX(-50%) scaleY(0.8) translateY(-8px);
+      transform-origin: top center;
+      width: 220px;
+      background: var(--card-bg);
+      color: var(--text-main);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      padding: 16px 18px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.16s ease, transform 0.18s ease;
+      z-index: 20;
+    }
+
+    .dropdown-menu.open {
+      opacity: 1;
+      transform: translateX(-50%) scaleY(1) translateY(0);
+      pointer-events: auto;
+    }
+
+    .dropdown-title {
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      font-size: 0.82rem;
+      margin-bottom: 10px;
+    }
+
+    .dropdown-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .dropdown-list li + li {
+      margin-top: 6px;
+    }
+
+    .dropdown-link {
+      display: block;
+      padding: 5px 0;
+      font-size: 0.9rem;
+      border-radius: 999px;
+      transition: transform 0.1s ease, background 0.1s ease;
+    }
+
+    .dropdown-link span {
+      border-bottom: 1px solid rgba(15, 23, 42, 0.25);
+    }
+
+    .dropdown-link:hover,
+    .dropdown-link:focus-visible {
+      background: rgba(15, 23, 42, 0.12);
+      transform: translateX(4px);
+    }
+
+    .dropdown-footnote {
+      margin-top: 10px;
+      font-size: 0.78rem;
+      color: rgba(15, 23, 42, 0.9);
+    }
+
+    .menu-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.35);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.16s ease;
+      z-index: 15;
+    }
+
+    .menu-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* MAIN CONTENT WRAPPER */
+
+    .content-shell {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px; /* space between cards */
+    }
+
+    /* CARD SECTIONS */
+
+    .section {
+      background: linear-gradient(135deg, var(--card-bg-soft), var(--card-bg));
+      color: var(--text-main);
+      border-radius: var(--radius);
+      box-shadow: var(--card-shadow);
+      padding: 24px 26px 26px;
+    }
+
+    .hero {
+      text-align: center;
+      padding-top: 28px;
+      padding-bottom: 32px;
+    }
+
+    .section-tag {
+      font-size: 0.78rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(15, 23, 42, 0.7);
+      margin-bottom: 6px;
+    }
+
+    .section h2 {
+      font-size: 1.35rem;
+      margin-bottom: 8px;
+    }
+
+    .section p {
+      font-size: 0.95rem;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: minmax(0, 220px) minmax(0, 1fr);
+      gap: 32px;
+      align-items: flex-start;
+    }
+
+    .hero h2 {
+      font-size: 1.45rem;
+      margin-bottom: 8px;
+    }
+
+    .hero p {
+      max-width: 420px;
+      margin: 0 auto 18px;
+      font-size: 0.95rem;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 18px;
+      border-radius: 999px;
+      border: 2px solid #111827;
+      background: #111827;
+      color: #f9fafb;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.5);
+      transition: background 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
+    }
+
+    .button:hover,
+    .button:focus-visible {
+      background: #020617;
+      transform: translateY(-1px);
+      box-shadow: 0 14px 32px rgba(15, 23, 42, 0.7);
+    }
+
+    .section ul {
+      font-size: 0.95rem;
+      margin-top: 10px;
+      padding-left: 1.1rem;
+    }
+
+    .section ul li + li {
+      margin-top: 4px;
+    }
+
+    footer {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 16px 28px;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    /* RESPONSIVE */
+
+    @media (max-width: 900px) {
+      .header-wrap {
+        grid-template-columns: 1fr;
+        justify-items: center;
+      }
+
+      .banner {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .section {
+        padding: 20px 18px 22px;
+      }
+
+      .two-col {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Backdrop for menu -->
+  <div class="menu-backdrop" id="menuBackdrop"></div>
+
+  <main>
+    <!-- HEADER: LOGO + BANNER -->
+    <header class="header-wrap">
+      <div class="menu-wrapper">
+        <button
+          class="logo-button"
+          id="logoToggle"
+          aria-label="Open site menu"
+          aria-expanded="false"
+          aria-controls="siteMenu">
+          <div class="logo-inner-circle">
+            <img src="nutty-buddies-logo.png" alt="Nutty Buddies logo">
+          </div>
+        </button>
+
+        <!-- DROPDOWN MENU THAT OPENS FROM LOGO -->
+        <nav class="dropdown-menu" id="siteMenu" aria-label="Nutty Buddies site menu">
+          <div class="dropdown-title">Menu</div>
+          <ul class="dropdown-list">
+            <li><a class="dropdown-link" href="#hero"><span>Hero</span></a></li>
+            <li><a class="dropdown-link" href="#intro"><span>Created by Us</span></a></li>
+            <li><a class="dropdown-link" href="#resources"><span>Resources</span></a></li>
+            <li><a class="dropdown-link" href="#discord"><span>Join the Discord</span></a></li>
+          </ul>
+          <p class="dropdown-footnote">
+            Peer-led space. Nothing here is medical advice — just lived experience,
+            resources, and connection.
+          </p>
+        </nav>
+      </div>
+
+      <div class="banner">
+        <div>
+          <div class="banner-title">Nutty Buddies</div>
+          <p class="banner-sub">
+            A peer-led space where people living with mental illness share resources, real stories, and connection.
+          </p>
+        </div>
+      </div>
+    </header>
+
+    <!-- CARD-BASED CONTENT -->
+    <div class="content-shell">
+      <!-- HERO CARD -->
+      <section id="hero" class="section hero">
+        <h2>A Peer-Led Space for People With Mental Illness</h2>
+        <p>
+          Where people living with mental illness share resources, real stories, and connection.
+        </p>
+        <!-- Replace with your actual Discord invite link -->
+        <a href="https://discord.gg/YOURINVITECODE" target="_blank" rel="noopener" class="button">
+          Join the Community on Discord
+        </a>
+      </section>
+
+      <!-- BRIEF INTRO CARD -->
+      <section id="intro" class="section">
+        <div class="two-col">
+          <div>
+            <div class="section-tag">Brief Intro</div>
+            <h2>Created by Us, for Us</h2>
+          </div>
+          <div>
+            <p>
+              Nutty Buddies is a community built by people living with mental illness —
+              not professionals, caregivers, or institutions.
+            </p>
+            <br>
+            <p>
+              We share what has actually helped us: grounding tools, crisis resources,
+              personal stories, and small pieces of hope from people who understand
+              what the struggle feels like from the inside.
+            </p>
+            <br>
+            <p>
+              Whether you’re in recovery, figuring things out, or just tired of being
+              alone with it… you’re welcome here.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- RESOURCES INTRO CARD -->
+      <section id="resources" class="section">
+        <div class="two-col">
+          <div>
+            <div class="section-tag">Resources Intro</div>
+            <h2>Peer-Reviewed Mental Health Resources</h2>
+          </div>
+          <div>
+            <p>
+              Our community curates and organizes trustworthy resources that have helped us personally —
+              from crisis lines and therapy access, to grounding practices, to medication assistance programs.
+            </p>
+            <br>
+            <p>
+              We’re not doctors. We’re people living it. And that makes the list different.
+            </p>
+
+            <ul>
+              <li>Crisis Support</li>
+              <li>Finding Therapy &amp; Affordable Care</li>
+              <li>Coping Skills &amp; Grounding Guides</li>
+              <li>Apps &amp; Tools We Actually Use</li>
+              <li>Community Recommendations</li>
+            </ul>
+
+            <br>
+            <!-- Point this to a future resources page if you add one -->
+            <a href="#resources" class="button">
+              View the Resource List
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- JOIN DISCORD CARD -->
+      <section id="discord" class="section">
+        <div class="two-col">
+          <div>
+            <div class="section-tag">Join the Discord</div>
+            <h2>Join the Discord</h2>
+          </div>
+          <div>
+            <p>
+              Our Discord server is where the real conversation happens — daily chats,
+              check-ins, late-night support, memes, and honest talks about living with mental illness.
+            </p>
+            <br>
+            <a href="https://discord.gg/YOURINVITECODE" target="_blank" rel="noopener" class="button">
+              Enter the Discord
+            </a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    Nutty Buddies is a peer-led community and does not provide professional or crisis services.
+    If you are in immediate danger, please contact local emergency services.
+  </footer>
+
+  <script>
+    // Simple dropdown toggle for logo menu
+    const logoToggle = document.getElementById('logoToggle');
+    const menu = document.getElementById('siteMenu');
+    const backdrop = document.getElementById('menuBackdrop');
+
+    function setMenu(open) {
+      if (open) {
+        menu.classList.add('open');
+        backdrop.classList.add('open');
+        logoToggle.setAttribute('aria-expanded', 'true');
+      } else {
+        menu.classList.remove('open');
+        backdrop.classList.remove('open');
+        logoToggle.setAttribute('aria-expanded', 'false');
+      }
+    }
+
+    let isOpen = false;
+
+    logoToggle.addEventListener('click', () => {
+      isOpen = !isOpen;
+      setMenu(isOpen);
+    });
+
+    backdrop.addEventListener('click', () => {
+      isOpen = false;
+      setMenu(false);
+    });
+
+    // Close menu when clicking a menu link
+    menu.addEventListener('click', (e) => {
+      if (e.target.closest('a')) {
+        isOpen = false;
+        setMenu(false);
+      }
+    });
+
+    // ESC to close
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        isOpen = false;
+        setMenu(false);
+      }
+    });
+  </script>
+</body>
+</html>
